@@ -1,18 +1,40 @@
-import { MdDarkMode, MdLightMode } from 'react-icons/md';
-import { useTheme } from '../context/ThemeProvider';
-import './Header.css';
+import { useEffect, useState } from "react";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { TiShoppingCart } from "react-icons/ti";
+import { useTheme } from "../context/ThemeProvider";
+import "./Header.css";
+import { useMenu } from "../context/MenuProvider";
 
 function Header() {
   // const { theme, toggleTheme } = useContext(ThemeContext);
+
+  const { toggleMenu } = useMenu();
   const { theme, toggleTheme } = useTheme();
+  const [pulse, setPulse] = useState(false);
+  const [qtd, setQtd] = useState(0);
+
+  useEffect(() => {
+    if (pulse) {
+      const timer = setTimeout(() => {
+        setPulse(false);
+      }, 200);
+      return () => clearTimeout(timer);
+    }
+  }, [pulse]);
+
   return (
     <header>
       <h1>Context API</h1>
-      <button onClick={ toggleTheme }></button>
-        { theme === 'light' && <MdDarkMode size={ 18 } className='icon'/> }
-        { theme === 'dark' && <MdLightMode size={ 18 } className='icon'/> }
+      <button onClick={toggleTheme}>
+        {theme === "light" && <MdDarkMode size={18} className="icon" />}
+        {theme === "dark" && <MdLightMode size={18} className="icon" />}
+      </button>
+      <button className="shopping__cart" onClick={toggleMenu}>
+        <TiShoppingCart size={18} />;
+        <span className={pulse ? "pulse" : ""}>{qtd}</span>
+      </button>
     </header>
-  )
+  );
 }
 
 export default Header;
