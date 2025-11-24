@@ -1,5 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import type React from "react";
 import ThemeContext from "./ThemeContext";
+import { useContext, useState } from "react";
 
 function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState("light");
@@ -17,7 +19,7 @@ function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('ThemeContext não pode ser usado fora de um provider')
+    throw new Error('Theme Context não pode ser usado fora de um provider')
   }
 
   return context;

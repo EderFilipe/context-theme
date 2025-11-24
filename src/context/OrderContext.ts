@@ -7,18 +7,18 @@ export type Product = {
   quantity: number;
 }
 
-export type CarState = {
+export type CartState = {
   products: Product[];
   total: number;
 
 }
 
 type OrderContextType = {
-  cart: CarState;
-  addProduct: (product: Product) => void;
+  cart: CartState;
+  addProduct: (product: Omit<Product, 'quantity'>) => void;
   removeProduct: (id: number) => void;
   checkout: () => void;
 };
 
-const orderContext = createContext<OrderContextType | undefined>(undefined);
-export default orderContext;
+const OrderContext = createContext<OrderContextType | undefined>(undefined);
+export default OrderContext;

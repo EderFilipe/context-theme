@@ -1,25 +1,28 @@
-const carrinho = {
+/* const carrinho = {
   produtos: [
     {id: 1, nome: 'Produto 1', preco: 10.0, quantidade: 1}
-  ],
-  total: 0,
-};
+    ],
+    total: 0,
+    }; */
+
+import { useOrder } from "../context/OrderProvider";
 
 function Cart() {
+  const { cart } = useOrder();
   return (
     <div>
       <h2>Carrinho</h2>
       <ul>
-        {carrinho.produtos.map((produto) => (
+        {cart.products.map((produto) => (
           <li key={produto.id}>
-            {produto.nome}
+            {produto.name}
             {' '}
             -$
-            {produto.preco}
+            {produto.price}
             {' '}
             (Quantidade:
             {' '}
-            {produto.quantidade}
+            {produto.quantity}
             )
             <button onClick={ () => {} }>Remover</button>
           </li>
@@ -27,7 +30,7 @@ function Cart() {
       </ul>
       <p>
         Total: R$
-        {carrinho.total}
+        {cart.total}
       </p>
     </div>
   )

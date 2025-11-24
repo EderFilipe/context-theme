@@ -1,19 +1,21 @@
 import { IoIosAddCircle } from "react-icons/io"
-import { products } from "../data/produtos";
+import { products } from "../data/products";
 import './ProductList.css';
+import { useOrder } from "../context/OrderProvider";
 
 function ProductList() {
+  const { addProduct } = useOrder();
   return (
     <div className="product__list">
       <h2>Produtos</h2>
       <ul>
         {products.map((produto) => (
           <li key={produto.id}>
-            {produto.nome}
+            {produto.name}
             {' '}
             - R$
-            {produto.preco}
-            <button onClick={ () => {} }>
+            {produto.price}
+            <button onClick={ () => addProduct(produto) }>
               <IoIosAddCircle size={ 20 } />
             </button>
           </li>
