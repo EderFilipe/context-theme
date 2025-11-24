@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-refresh/only-export-components */
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import OrderContext, { type CartState, type Product } from "./OrderContext";
 
 const initialState = {
@@ -10,7 +11,17 @@ const initialState = {
 function OrderProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartState>(initialState);
 
-  const addProduct = (product: Omit<Product, 'quantity'> ) => {
+  useEffect(() => {
+    const total = cart.products
+      .reduce((acc, prod) => acc + (prod.price * prod.quantity), 0);
+
+    setCart((prevState) => ({
+      ...prevState,
+      total,
+    }));
+  }, [cart.products])
+
+  const addProduct = (product: Omit<Product, "quantity">) => {
     const productInCart = cart.products.find((p) => p.id === product.id);
     if (productInCart) {
       setCart({
@@ -27,8 +38,29 @@ function OrderProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const removeProduct = (id: number) => {
+    const updatedProducts = cart.products.map((prod) => {
+      if (prod.id === id) {
+        return prod.quantity > 1
+          ? { ...prod, quantity: prod.quantity - 1 }
+          : null;
+      }
+      return prod;
+    }).filter(Boolean) as Product[];
+
+    setCart({
+      ...cart,
+      products: updatedProducts,
+    })
+  };
+
+  const checkout = () => {
+    alert ('Pedido enviado com sucesso!')
+    setCart(initialState);
+  }
+  
   return (
-    <OrderContext.Provider value={{ addProduct, cart }}>
+    <OrderContext.Provider value={{ addProduct, cart, removeProduct, checkout }}>
       {children}
     </OrderContext.Provider>
   );

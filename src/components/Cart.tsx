@@ -8,7 +8,7 @@
 import { useOrder } from "../context/OrderProvider";
 
 function Cart() {
-  const { cart } = useOrder();
+  const { cart, removeProduct } = useOrder();
   return (
     <div>
       <h2>Carrinho</h2>
@@ -24,7 +24,7 @@ function Cart() {
             {' '}
             {produto.quantity}
             )
-            <button onClick={ () => {} }>Remover</button>
+            <button onClick={ () => removeProduct(produto.id) }>Remover</button>
           </li>
         ))}
       </ul>
